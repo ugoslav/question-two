@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Simple Webpage</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <div id="body">
+        <form>
+            <p>Type your name: </p><input type="text" id="name" placeholder="type your name here..." />
+            <p>Type your age: </p><input type="number" id="age" placeholder="type your age here..." /><br />
+            <button type="submit" id="button" onclick="display()">submit</button>
+            <button onclick="clearFunction()">reset</button>
+        </form>
+        <div id="content-area">
+            <ul id="content"></ul>
+        </div>
+    </div>
+    <script>
+        //Styling
+        document.getElementById('button').style.marginTop = "3vh";
+        document.getElementById('body').style.textAlign = "center";
+        document.getElementById('content-area').style.textAlign = 'center';
+
+        //Viewing data on the page
+        let presentData = []
+        if (sessionStorage.getItem('data')) {
+            presentData = JSON.parse(sessionStorage.getItem('data'))
+        }
+
+        let contentArea = document.getElementById('content')
+        presentData.forEach(item => {
+            const node = document.createElement('li')
+            const textNode = document.createTextNode(item.name + "," + item.age)
+            contentArea.append(textNode)
+            const lineBreak = document.createElement('br')
+            contentArea.appendChild(lineBreak)
+        })
+
+        //Reset function
+        function clearFunction() {
+            sessionStorage.clear()
+        }
+        //"Adding new item" function
+        function display() {
+
+            if (!sessionStorage.getItem('data'))
+                sessionStorage.setItem('data', JSON.stringify([]))
+
+            let name = document.getElementById('name').value
+            let age = document.getElementById('age').value
+
+            let data = JSON.parse(sessionStorage.getItem(('data')))
+            data.push({ 'name': name, 'age': age })
+            sessionStorage.setItem('data', JSON.stringify(data))
+
+        }
+    </script>
+</body>
+
+</html>
